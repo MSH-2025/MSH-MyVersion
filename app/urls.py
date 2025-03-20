@@ -19,6 +19,7 @@ from django.urls import include, path
 
 from main import views
 from goods import views
+from app.settings import DEBUG
 
 # Вызывать не будем функцию а просто ее зарегаем. также укажем имя, оно необходимо, вдруг мы поменяли PATH
 # Так что лучше использовать псевдоним
@@ -28,3 +29,8 @@ urlpatterns = [
     path('', include('main.urls', namespace='main')),
     path('catalog/', include('goods.urls', namespace='catalog')),
 ]
+
+if DEBUG:
+    urlpatterns += [
+        path("__debug__/", include("debug_toolbar.urls")),
+    ]
