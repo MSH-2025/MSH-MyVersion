@@ -19,7 +19,8 @@ from django.urls import include, path
 
 from main import views
 from goods import views
-from app.settings import DEBUG
+from app import settings
+from django.conf.urls.static import static
 
 # Вызывать не будем функцию а просто ее зарегаем. также укажем имя, оно необходимо, вдруг мы поменяли PATH
 # Так что лучше использовать псевдоним
@@ -28,9 +29,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls', namespace='main')),
     path('catalog/', include('goods.urls', namespace='catalog')),
+
 ]
 
-if DEBUG:
+if settings.DEBUG:
     urlpatterns += [
         path("__debug__/", include("debug_toolbar.urls")),
     ]
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
