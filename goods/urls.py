@@ -5,6 +5,7 @@ from goods import views
 # Так что лучше использовать псевдоним
 app_name = 'goods'
 urlpatterns = [
-    path('', views.catalog, name='index'), # ведет на каталог
+    path('<slug:category_slug>/', views.catalog, name='index'), # ведет на каталог
+    path('<slug:category_slug>/<int:page>/', views.catalog, name='index'), # ведет на каталог
     path('product/<slug:product_slug>/', views.product, name='product'),
 ]
