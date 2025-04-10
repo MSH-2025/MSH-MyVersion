@@ -5,49 +5,89 @@
 
 {% block content %}
 <div class="row">
-    <!-- Форма фильтров -->
-    <div class="dropdown mb-2">
-        <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Фильтры
-        </button>
 
-        <form action=" {% if request.GET.q %}{% url "catalog:search" %}{% else %}{% url "catalog:index" slug_url %}{% endif %}" method="get" class="dropdown-menu bg-dark" data-bs-theme="dark">
-            <div class="form-check text-white mx-3">
-                <input class="form-check-input" type="checkbox" name="on_sale" id="flexCheckDefault" value="on" {% if request.GET.on_sale == 'on' %} checked {% endif %}>
-                
-                {% if request.GET.q %}
-                    <input type="hidden" name="q" value="{{ request.GET.q }}">
-                {% endif %}
+        <!-- Форма фильтров -->
+        <div class="dropdown mb-2">
+            <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Фильтры
+            </button>
+    
+            <form action=" {% if request.GET.q %}{% url "catalog:search" %}{% else %}{% url "catalog:index" slug_url %}{% endif %}" method="get" class="dropdown-menu bg-dark" data-bs-theme="dark">
+{% comment %}
+                    <div class="form-check text-white mx-3">
+                        <input class="form-check-input" type="checkbox" name="on_sale" id="flexCheckDefault" value="on" {% if request.GET.on_sale == 'on' %} checked {% endif %}>
+                        
+                        {% if request.GET.q %}
+                            <input type="hidden" name="q" value="{{ request.GET.q }}">
+                        {% endif %}
+        
+        
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Товары по акции
+                        </label>
+                    </div>
+{% endcomment %}
+                <p class="text-white mx-3 mt-3">Выбрать страну производитель:</p>
+                <div class="form-check text-white mx-3">
+                    <input class="form-check-input" type="radio" name="order_by" id="flexRadioDefault1" value="default">
+                    <label class="country" for="flexRadioDefault1">
+                        Все страны
+                    </label>
+                </div>
 
 
-                <label class="form-check-label" for="flexCheckDefault">
-                    Товары по акции
-                </label>
+                {% comment %} <div class="form-check text-white mx-3">
+                    <input class="form-check-input" type="radio" name="country" id="flexRadioDefault3" value="Россия">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        Россия
+                    </label>
+                </div> {% endcomment %}
+
+
+                {% for country in countries %}
+                    <div class="form-check text-white mx-3">
+                        <input class="form-check-input" type="radio" name="country" id="country{{ country.id }}" value="{{ country.name }}"
+                            <label class="form-check-label" for="country{{ country.id }}">
+                            {{ country.name }}
+                        </label>
+                    </div>
+                {% endfor %}
+
+
+
+
+                        <!-- Поля для выбора года -->
+        <div class="text-white mx-3 mt-3">
+            <p>Год производства:</p>
+            <div class="row g-2">
+                <div class="col">
+                    <input type="number" 
+                           class="form-control" 
+                           placeholder="От" 
+                           name="year_min" 
+                           value="{{ request.GET.year_min }}"
+                           min="1900" 
+                           max="{% now 'Y' %}">
+                </div>
+                <div class="col">
+                    <input type="number" 
+                           class="form-control" 
+                           placeholder="До" 
+                           name="year_max" 
+                           value="{{ request.GET.year_max }}"
+                           min="1900" 
+                           max="{% now 'Y' %}">
+                </div>
             </div>
-            <p class="text-white mx-3 mt-3">Сортировать:</p>
-            <div class="form-check text-white mx-3">
-                <input class="form-check-input" type="radio" name="order_by" id="flexRadioDefault1" value="default"
-                {% if  not request.GET.order_by or request.GET.order_by == 'default' %}checked{% endif %} >
-                <label class="form-check-label" for="flexRadioDefault1">
-                    По умолчанию
-                </label>
-            </div>
-            <div class="form-check text-white mx-3">
-                <input class="form-check-input" type="radio" name="order_by" id="flexRadioDefault2" value="price" {% if request.GET.order_by == 'price' %} checked {% endif %}>
-                <label class="form-check-label" for="flexRadioDefault2">
-                    От дешевых к дорогим
-                </label>
-            </div>
-            <div class="form-check text-white mx-3">
-                <input class="form-check-input" type="radio" name="order_by" id="flexRadioDefault3" value="-price" {% if request.GET.order_by == '-price' %} checked {% endif %}>
-                <label class="form-check-label" for="flexRadioDefault3">
-                    От дорогих к дешевым
-                </label>
-            </div>
-            <button type="submit" class="btn btn-primary mx-3 mt-3">Применить</button>
-        </form>
-    </div>
+        </div>
+        
+
+
+                <button type="submit" class="btn btn-primary mx-3 mt-3">Применить</button>
+            </form>
+        </div>
+
 
 
     {% if request.GET.q %}
@@ -73,22 +113,27 @@
                         <p class="card-title">{{ product.name }}</p>
                     </a>
                     <p class="card-text text">{{ product.description|truncatechars:45  }}</p>
-                    <p class="product_id">id: {{ product.display_id }}</p>
-                    <div class="d-flex justify-content-between">
+                    <p class="product_county">id: {{ product.display_id }}</p>
+                    <p class="product_county">Стана производитель: {{ product.country }}</p>
+                    <p class="product_year">Год выпуска: {{ product.year }}</p>
 
-                        {% if product.discount  %}
-                            <p><s>{{ product.price }}</s> $</p>
-                            <p><strong>{{ product.sell_price }}</strong></p>
-                            <span class="badge bg-warning text-dark">Скидка {{ product.discount }} %</span>
-                        {% else %}
-                            <p><strong>{{ product.price }}</strong></p>
-                        {% endif %}
-
-                        <a href="#" class="btn add-to-cart">
-                            <img class="mx-1" src="{% static "deps/icons/cart-plus.svg" %}" alt="Catalog Icon"
-                                width="32" height="32">
-                        </a>
-                    </div>
+{% comment %}
+                        <div class="d-flex justify-content-between">
+    
+                            {% if product.discount  %}
+                                <p><s>{{ product.price }}</s> $</p>
+                                <p><strong>{{ product.sell_price }}</strong></p>
+                                <span class="badge bg-warning text-dark">Скидка {{ product.discount }} %</span>
+                            {% else %}
+                                <p><strong>{{ product.price }}</strong></p>
+                            {% endif %}
+    
+                            <a href="#" class="btn add-to-cart">
+                                <img class="mx-1" src="{% static "deps/icons/cart-plus.svg" %}" alt="Catalog Icon"
+                                    width="32" height="32">
+                            </a>
+                        </div>
+{% endcomment %}
                 </div>
             </div>
         </div>

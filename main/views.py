@@ -8,16 +8,16 @@ from goods.models import Categories
 # HttpRequest -> HttpResponse
 def index(request):
     context = {
-        'title': "Home - Главная",
-        'content': "Магазин мебели HOME",
+        'title': "Machine Service Hub - Главная",
+        'content': "Магазин станков Machine Service Hub",
     }
     return render(request, 'main/index.html', context)
 
 def about(request):
     context = {
-        'title': "Home - О нас",
+        'title': "Machine Service Hu - О нас",
         'content': "О нас",
-        'text_on_page': "Текст почему этот магащин такой классный для людей"
+        'text_on_page': "Умный текст"
 
     }
     return render(request, 'main/about.html', context)
