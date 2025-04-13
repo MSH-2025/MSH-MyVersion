@@ -48,7 +48,7 @@ class Products(models.Model):
         verbose_name_plural= 'Станки'
         ordering = ("id",)
     def __str__(self):
-        return f'{self.name} Количество - {self.quantity}'
+        return f'{self.name}'
     
     def display_id(self):
         return f"{self.id:05}"
@@ -74,9 +74,12 @@ class Services(models.Model):
         verbose_name=  'Работа'
         verbose_name_plural= 'Работы'
         ordering = ("id",)
+
     # def __str__(self):
-    #     return f'{self.name} Количество - {self.quantity}'
+    #     return f'{self.name}'
     
+    def __str__(self):
+        return f"{self.name} (для {self.machine.name})"
     # def display_id(self):
     #     return f"{self.id:05}"
     
