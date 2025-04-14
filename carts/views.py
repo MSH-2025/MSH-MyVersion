@@ -1,7 +1,12 @@
+from urllib import response
 from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 from carts.models import Cart
 
 from goods.models import Products, Services
+from django.http import JsonResponse
+from carts.utils import get_user_carts
+
 
 # Create your views here.
 # def cart_add(request, product_id):
@@ -21,7 +26,10 @@ from goods.models import Products, Services
 
 #     return redirect(request.META['HTTP_REFERER'])
 
-def cart_add(request, service_id):
+def cart_add(request):
+
+
+    service_id = request.POST.get("service_id")
 
     service = Services.objects.get(id=service_id)
     product = service.machine  
@@ -37,7 +45,18 @@ def cart_add(request, service_id):
         else:
             Cart.objects.create(user=request.user, service=service,  product=product, quantity=1)
 
-    return redirect(request.META['HTTP_REFERER'])
+
+    user_cart = get_user_carts(request)
+    cart_items_html = render_to_string(
+        "carts/includes/included_cart.html", {"carts": user_cart}, request=request)
+
+    response_data = {
+        "message": "Товар добавлен в корзину",
+        "cart_items_html": cart_items_html,
+    }
+
+    return JsonResponse(response_data)
+    # return redirect(request.META['HTTP_REFERER'])
 
             
 def cart_change(request, product_id):
