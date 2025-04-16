@@ -59,9 +59,15 @@ class OrderItem(models.Model):
 
     objects = OrderitemQueryset.as_manager()
 
-    def service_duration(self):
-        return self.service.duration * self.quantity
+    def srvduration(self):
+        return self.duration * self.quantity
     
+    def machinename(self):
+        service = Services.objects.get(name=self.name)
+        product = service.machine  
+        return product.name
+    
+
     def __str__(self):
         service = Services.objects.get(name=self.name)
         product = service.machine  
