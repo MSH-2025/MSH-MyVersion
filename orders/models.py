@@ -1,3 +1,5 @@
+from math import prod
+from platform import machine
 from django.db import models
 from goods.models import Products, Services
 
@@ -47,7 +49,7 @@ class OrderItem(models.Model):
     duration = models.PositiveBigIntegerField(default=0, verbose_name='Длительность')
 
     quantity = models.PositiveIntegerField(default=0, verbose_name="Количество")
-    created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Дата продажи")
+    created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Дата оформления")
 
 
     class Meta:
@@ -59,5 +61,8 @@ class OrderItem(models.Model):
 
     def service_duration(self):
         return self.service.duration * self.quantity
+    
     def __str__(self):
-        return f"Товар {self.name} | Заказ № {self.order.pk}"
+        service = Services.objects.get(name=self.name)
+        product = service.machine  
+        return f"Работа {self.name} | Станок {product.name} | Заказ № {self.order.pk}"
