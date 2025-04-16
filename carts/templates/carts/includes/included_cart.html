@@ -30,7 +30,7 @@
                     <div class="col p-0">
                         <p>{{ cart.service.duration }} час. </p> 
                     </div>
-                    {% comment %} <div class="col p-0"><strong> {{cart.products_price}} $</strong></div> {% endcomment %}
+                    <div class="col p-0"><strong> {{cart.service_duration}} час. </strong></div>
                     <div class="col p-0">
                         <a href="{% url "cart:cart_remove"  %}" class="remove-from-cart" data-cart-id="{{ cart.id }}">
                             {% csrf_token %}
@@ -45,7 +45,7 @@
 </div>
 <div class="card mb-3 shadow-lg">
     <div class="card-footer">
-        <p class="float-left">Итого <strong>1</strong> товар(а) на сумму</p>
-        <h4 class="float-left"><strong>100.00 $</strong></h4>
+        <p class="float-left">Итого <strong>{{ carts.total_quantity }}</strong> работ с длительностью</p>
+        <h4 class="float-left"><strong>{{ carts.total_duration }} час. </strong></h4>
     </div>
 </div>

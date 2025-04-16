@@ -45,9 +45,25 @@ $(document).ready(function () {
 
             },
 
-            error: function (data) {
-                console.log("Ошибка при добавлении товара в корзину");
+            // error: function (data) {
+            //     console.log("Ошибка при добавлении товара в корзину");
+            // },
+            error: function (xhr) {
+                if (xhr.status === 401) {
+                    var response = xhr.responseJSON;
+                    // Показываем сообщение от Django
+                    successMessage.html(response.message || "Требуется авторизация.");
+                    successMessage.fadeIn(400);
+                    setTimeout(function () {
+                        successMessage.fadeOut(400);
+                        // После fadeOut делаем редирект
+                        window.location.href = "/user/login/?next=" + window.location.pathname;
+                    }, 2000);
+                } else {
+                    console.log("Ошибка при добавлении товара в корзину");
+                }
             },
+
         });
     });
 

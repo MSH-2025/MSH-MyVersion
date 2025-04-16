@@ -5,15 +5,25 @@ from django.db import models
 from users.models import User
 from goods.models import Products, Services
 
+# class CartQueryset(models.QuerySet):
+     
+#      def total_price(self):
+#          return sum(cart.products_price() for cart in self)
+     
+#      def total_quantity(self):
+#          if self:
+#              return sum(cart.quantity for cart in self)
+#          return 0
+
 class CartQueryset(models.QuerySet):
-     
-     def total_price(self):
-         return sum(cart.products_price() for cart in self)
-     
-     def total_quantity(self):
-         if self:
-             return sum(cart.quantity for cart in self)
-         return 0
+    
+    def total_duration(self):
+        return sum(cart.service_duration() for cart in self)
+    
+    def total_quantity(self):
+        if self:
+            return sum(cart.quantity for cart in self)
+        return 0
 
 class Cart(models.Model):
 
@@ -31,11 +41,13 @@ class Cart(models.Model):
         verbose_name = "Корзина"
         verbose_name_plural = "Корзина"
 
-    # objects= CartQueryset().as_manager()
+    objects= CartQueryset().as_manager()
 
     # def products_price(self):
     #     return round(self.product.sell_price() * self.quantity, 2)
 
-
+    def service_duration(self):
+        return self.service.duration * self.quantity
+    
     def __str__(self):
         return f'Корзина {self.user.username} | Товар {self.product.name} | Работы {self.service.name}'

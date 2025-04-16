@@ -7,6 +7,8 @@ from goods.models import Products, Services
 from django.http import JsonResponse
 from carts.utils import get_user_carts
 
+from django.contrib import messages
+
 
 # Create your views here.
 # def cart_add(request, product_id):
@@ -45,10 +47,26 @@ def cart_add(request):
         else:
             Cart.objects.create(user=request.user, service=service,  product=product, quantity=1)
 
+    # else:
+    #         # Логика для неавторизованных пользователей
+    #         messages.warning(
+    #             request,
+    #             'Для добавления товара в корзину требуется авторизация.'
+    #         )
+    #         return redirect(request.META['HTTP_REFERER'])
+
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            "error": "auth_required",
+            "message": "Для добавления товара в корзину необходимо войти или зарегистрироваться."
+        }, status=401)
+
+
+        
 
     user_cart = get_user_carts(request)
     cart_items_html = render_to_string(
-        "carts/includes/included_cart.html", {"carts": user_cart}, request=request)
+        "carts/includes/included_cart.html", {"carts": user_cart.order_by('created_timestamp')}, request=request)
 
     response_data = {
         "message": "Товар добавлен в корзину",
@@ -66,16 +84,16 @@ def cart_change(request):
  
      cart.quantity = quantity
      cart.save()
-    #  updated_quantity = cart.quantity
+     updated_quantity = cart.quantity
  
      cart = get_user_carts(request)
      cart_items_html = render_to_string(
-         "carts/includes/included_cart.html", {"carts": cart}, request=request)
+         "carts/includes/included_cart.html", {"carts": cart.order_by('created_timestamp')}, request=request)
  
      response_data = {
          "message": "Количество изменено",
          "cart_items_html": cart_items_html,
-         "quaantity": updated_quantity,
+         "quantity": quantity,
      }
  
      return JsonResponse(response_data)
