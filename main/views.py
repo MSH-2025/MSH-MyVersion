@@ -15,7 +15,7 @@ def index(request):
 
 def about(request):
     context = {
-        'title': "Machine Service Hu - О нас",
+        'title': "Machine Service Hub - О нас",
         'content': "О нас",
         'text_on_page': "Умный текст"
 
