@@ -153,7 +153,7 @@
             <li class="page-item {% if not goods.has_previous %}disabled{% endif %}">
               <a class="page-link" href="{% if  goods.has_previous %}?{% change_paramas page=goods.previous_page_number %}{% else %}
               #
-              {% endif %}">Previous</a>
+              {% endif %}">Предыдущая</a>
             </li>
             {% for page in goods.paginator.page_range %}
             {% if page >= goods.number|add:-2 and page <= goods.number|add:2 %}
@@ -167,7 +167,7 @@
             <li class="page-item {% if not goods.has_next %}disabled{% endif %} ">
                 <a class="page-link" href="{% if  goods.has_next %}?{% change_paramas page=goods.next_page_number %}{% else %}
                 #
-                {% endif %}">Next</a>
+                {% endif %}">Следующая</a>
             </li>
 
 

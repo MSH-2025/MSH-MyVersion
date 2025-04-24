@@ -18,7 +18,7 @@ body {
 
 body::before {
   content: "";
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -57,4 +57,11 @@ body::before {
   top: 80%;
   border-radius: 15px;
   font-size: 0.7rem;
+}
+
+.card-img-top {
+  aspect-ratio: 1/1;
+  /* Соотношение сторон 1:1 */
+  object-fit: cover;
+  width: 100%;
 }
