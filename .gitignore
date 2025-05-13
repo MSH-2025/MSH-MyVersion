@@ -1,11 +1,11 @@
 # #python stuff
-# venv/
+.venv/
 # .pylintrc
 # __pycache__/
 # cache/
 
 # #ide stuff
-# .vscode
+.vscode
 # .idea
 
 # #django stuff

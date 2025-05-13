@@ -3,25 +3,68 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static "deps/css/my_footer_css.css" %}">
-{% endblock  %}
-
+<style>
+    /* Стили для прокрутки и основного контента */
+    .scroll-container {
+        max-height: 70vh; /* Ограничение высоты контейнера */
+        overflow-y: auto; /* Вертикальная прокрутка */
+        padding-right: 15px; /* Чтобы контент не заезжал под скроллбар */
+        margin-bottom: 20px;
+        background-color: transparent !important; /* Прозрачный фон */
+    }
+    
+    /* Стиль карточки с прозрачным фоном */
+    .transparent-card {
+        background-color: transparent !important; /* Прозрачный фон */
+        border: none; /* Убираем границу */
+        backdrop-filter: blur(5px); /* Эффект размытия фона */
+    }
+    
+    /* Стиль для скроллбара */
+    .scroll-container::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    .scroll-container::-webkit-scrollbar-track {
+        background: transparent !important; /* Прозрачный фон */
+        border-radius: 4px;
+    }
+    
+    .scroll-container::-webkit-scrollbar-thumb {
+        background: transparent !important; /* Прозрачный фон */
+        border-radius: 4px;
+    }
+    
+    .scroll-container::-webkit-scrollbar-thumb:hover {
+        background: rgba(85, 85, 85, 0.7); /* Более темный при наведении */
+    }
+</style>
+{% endblock %}
 
 {% block modal_cart %}
 {% include "includes/cart_button.html" %}
 {% endblock modal_cart %}
 
-
 {% block content %}
-    <div class="mt-5 pt-5 bg-white custom-shadow rounded">
-        <h2 class="m-2"><strong>{{ content }}</strong></h2>
-        <p class="m-2">{{ text_on_page }}</p>
+<div class="container mt-4">
+    
+    
+    <div class="card transparent-card">  
+        <div class="card-body scroll-container">
+            {% if safe %}
+                <div class="text-black">{{ text_on_page|safe }}</div>  
+            {% else %}
+                <p class="text-black">{{ text_on_page }}</p>
+            {% endif %}
+        </div>
     </div>
+</div>
 {% endblock %}
 
-{% comment %} {% block footer %}
-<footer class="py-4 bg-dark">
+{% block footer %}
+<footer class="py-4 bg-dark mt-auto">
     <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Home Python Hub Studio 2025</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Machine Service Hub 2025</p>
     </div>
 </footer>
-{% endblock %} {% endcomment %}
+{% endblock %}

@@ -7,11 +7,8 @@
 {% include "includes/cart_button.html" %}
 {% endblock modal_cart %}
 
-
-
 {% block content %}
 <div class="row">
-
         <!-- Форма фильтров -->
         <div class="dropdown mb-2">
             <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" data-bs-toggle="dropdown"
@@ -35,8 +32,9 @@
                     </div>
 {% endcomment %}
                 <p class="text-white mx-3 mt-3">Выбрать страну производитель:</p>
+                
                 <div class="form-check text-white mx-3">
-                    <input class="form-check-input" type="radio" name="order_by" id="flexRadioDefault1" value="default">
+                    <input class="form-check-input" type="radio" name="country" id="flexRadioDefault1" value="default" style="border-color: blue;"> <!-- Здесь исправление (name="country" и style="border-color: blue;) -->
                     <label class="country" for="flexRadioDefault1">
                         Все страны
                     </label>
@@ -54,7 +52,7 @@
                 {% for country in countries %}
                     <div class="form-check text-white mx-3">
                         <input class="form-check-input" type="radio" name="country" id="country{{ country.id }}" value="{{ country.name }}"
-                            <label class="form-check-label" for="country{{ country.id }}">
+                            <label class="form-check-label" for="country{{ country.id }}" style="border-color: blue;">  <!-- Здесь исправление-->
                             {{ country.name }}
                         </label>
                     </div>
