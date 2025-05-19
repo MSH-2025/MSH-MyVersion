@@ -39,21 +39,6 @@
                         {% endfor %}
                         
                     </div>
-                    {% if form.errors %}
-                    <div class="alert alert-danger">
-                        {{ form.non_field_errors }}
-                    </div>
-                    {% endif %}
-
-                    {% comment %} {{form}} {% endcomment %}
-                    {% comment %} <div class="mb-3">
-                        <label for="username" class="form-label">Имя пользователя</label>
-                        <input type="text" class="form-control" id="username" placeholder="Введите ваше имя пользователя" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Пароль</label>
-                        <input type="password" class="form-control" id="password" placeholder="Введите ваш пароль" required>
-                    </div> {% endcomment %}
                     <button type="submit" class="btn btn-dark btn-block">Войти</button> 
                 </form>
                 <div class="mt-3">

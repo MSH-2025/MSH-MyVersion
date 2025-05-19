@@ -124,6 +124,8 @@ STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 # место сохранения изображений 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -140,7 +142,7 @@ INTERNAL_IPS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'axes.backends.AxesBackend',    # бэкенд аутентификации из пакета django-axes (отслеживание и блокировку неудачных попыток входа)
+    'users.backends.SafeAxesBackend',    # бэкенд аутентификации из пакета django-axes (отслеживание и блокировку неудачных попыток входа)
     'django.contrib.auth.backends.ModelBackend', #стандартный бэкенд Django (проверяет имя пользователя и пароль в базе данных)
 ]
 AXES_LOCKOUT_PARAMETERS = [["ip_address", "user_agent", "username"]] # каждого пользователя определяют 3 параметра: ip-адрес, имя браузера и имя пользователя

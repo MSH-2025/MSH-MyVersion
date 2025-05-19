@@ -10,23 +10,25 @@ from django.utils import timezone
 from users.forms import UserLoginForm, UserRegistrationForm, ProfileForm
 from orders.models import Order, OrderItem
 
-# Create your views here.
-
-
 def login(request):
 
     if request.method == 'POST':
         form = UserLoginForm(data=request.POST)
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = auth.authenticate(request, username=username, password=password)
-
+        user = auth.authenticate(request=request, username=username, password=password)
+        update_session_auth_hash(request, user) 
         if user:
             auth.login(request, user)
             messages.success(request, f"{username}, Вы вошли в аккаунт")
-            return redirect('main:index')
+            return HttpResponseRedirect(reverse('main:index'))
         else:
             messages.warning(request, "Неверный логин или пароль.")
+            context = {
+                'title': 'Home - Авторизация',
+                'form': form,
+            }
+            return render(request, 'users/login.html', context)
 
     else:
         form = UserLoginForm()
@@ -35,7 +37,6 @@ def login(request):
         'title': 'Home - Авторизация',
         'form': form,
     }
-    update_session_auth_hash(request, user) 
     return render(request, 'users/login.html', context)
 
 
@@ -93,17 +94,3 @@ def logout(request):
 
 def users_cart(request):
     return render(request, 'users/users_cart.html')
-
-# from django.contrib.auth.forms import PasswordChangeForm
-# from django.contrib.auth import update_session_auth_hash
-
-# def change_password(request):
-#     if request.method == 'POST':
-#         form = PasswordChangeForm(request.user, request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             update_session_auth_hash(request, user)  # Чтобы не выкидывало из сессии
-#             # Перенаправление или сообщение об успехе
-#     else:
-#         form = PasswordChangeForm(request.user)
-#     return render(request, 'change_password.html', context})
