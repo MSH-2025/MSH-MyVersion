@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static "deps/css/my_footer_css.css" %}">
+{% endblock  %}
+
+
+{% block modal_cart %}
+{% include "includes/cart_button.html" %}
+{% endblock modal_cart %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ title }}</h1>
+        {% if safe %}
+            {{ text_on_page|safe }}
+        {% else %}
+            <p>{{ text_on_page }}</p>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block footer %}
+<footer class="py-4 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Home Python Hub Studio 2025</p>
+    </div>
+</footer>
+{% endblock %}

@@ -28,8 +28,18 @@
                         <label for="id_password" class="form-label">Пароль</label>
                         <input type="password" class="form-control" name="password" id="id_password"
                         placeholder="Введите ваш пароль" required>
+                        {% for error in form.password.errors %}
+                            <div class="invalid-feedback">
+                                {{ warning }}
+                            </div>
+                        {% endfor %}
+                        
                     </div>
-
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
 
                     {% comment %} {{form}} {% endcomment %}
                     {% comment %} <div class="mb-3">
@@ -43,7 +53,7 @@
                     <button type="submit" class="btn btn-dark btn-block">Войти</button> 
                 </form>
                 <div class="mt-3">
-                    <a href="#">Забыли пароль?</a> | <a href="{% url "user:registration" %}">Создать аккаунт</a>
+                    <a href="{% url 'users:password_reset' %}">Забыли пароль?</a> | <a href="{% url 'user:registration' %}">Создать аккаунт</a>
                 </div>
                 <hr>
                 <div class="text-center">

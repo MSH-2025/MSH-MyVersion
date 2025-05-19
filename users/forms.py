@@ -7,12 +7,12 @@ from users.models import User
 # форма с моделями, применяет ограничения в моделях, для ссоответсвия с БД
 # 
 class UserLoginForm(AuthenticationForm):
-    class Meta:
-        model = User
-        fields = ['username', 'password']
+    # class Meta:
+    #     model = User
+    #     fields = ['username', 'password']
 
-    username = forms.CharField()
-    password = forms.CharField()
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 class UserRegistrationForm(UserCreationForm):
  
@@ -102,4 +102,3 @@ class ProfileForm(UserChangeForm):
      last_name = forms.CharField()
      username = forms.CharField()
      email = forms.CharField()
- 

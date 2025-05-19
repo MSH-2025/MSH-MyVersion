@@ -1,19 +1,10 @@
 from django.db import models
 
-# Create your models here.
+# Файл с дополнительными классами для работы с корзиной
+# Класс Cart соответсвует таблице в базе данных
 
 from users.models import User
 from goods.models import Products, Services
-
-# class CartQueryset(models.QuerySet):
-     
-#      def total_price(self):
-#          return sum(cart.products_price() for cart in self)
-     
-#      def total_quantity(self):
-#          if self:
-#              return sum(cart.quantity for cart in self)
-#          return 0
 
 class CartQueryset(models.QuerySet):
     
@@ -24,6 +15,7 @@ class CartQueryset(models.QuerySet):
         if self:
             return sum(cart.quantity for cart in self)
         return 0
+
 class Cart(models.Model):
 
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Пользователь')
@@ -41,9 +33,6 @@ class Cart(models.Model):
         verbose_name_plural = "Корзина"
 
     objects= CartQueryset().as_manager()
-
-    # def products_price(self):
-    #     return round(self.product.sell_price() * self.quantity, 2)
 
     def service_duration(self):
         return self.service.duration * self.quantity

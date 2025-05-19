@@ -1,8 +1,8 @@
 from tabnanny import verbose
-from tkinter.tix import Tree
 from django.db import models
 
-# Create your models here.
+# Файл с дополнительными классами для работы с корзиной
+# Класс Categories соответсвует таблице в базе данных
 
 class Categories(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name='Название')
@@ -17,7 +17,7 @@ class Categories(models.Model):
         return self.name
         
 class Countries(models.Model):
-    name = models.CharField(max_length=150, unique=True, verbose_name='Страна', default='Неизвестна')
+    name = models.CharField(max_length=150, unique=True, verbose_name='Страна', default='Неизвестная')
     slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name='URL') 
 
     class Meta:
@@ -74,17 +74,6 @@ class Services(models.Model):
         verbose_name=  'Работа'
         verbose_name_plural= 'Работы'
         ordering = ("id",)
-
-    # def __str__(self):
-    #     return f'{self.name}'
     
     def __str__(self):
         return f"{self.name} (для {self.machine.name})"
-    # def display_id(self):
-    #     return f"{self.id:05}"
-    
-    # def sell_price(self):
-    #     if self.discount:
-    #         return round(self.price - self.price * self.discount / 100, 2)
-        
-    #     return self.price

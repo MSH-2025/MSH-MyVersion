@@ -9,65 +9,45 @@ from carts.utils import get_user_carts
 
 from django.contrib import messages
 
+''' Здесь и далее под товаром понимается работа с конкретным станком/оборудованием,
+    которую клиент хочет в будущем заказать у предприятия, выполняющего ремонт '''
 
-# Create your views here.
-# def cart_add(request, product_id):
-
-#     product = Products.objects.get(id=product_id)
-    
-#     if request.user.is_authenticated:
-#         carts = Cart.objects.filter(user=request.user, product=product)
-
-#         if carts.exists():
-#             cart = carts.first()
-#             if cart:
-#                 cart.quantity += 1
-#                 cart.save()
-#         else:
-#             Cart.objects.create(user=request.user, product=product, quantity=1)
-
-#     return redirect(request.META['HTTP_REFERER'])
-
+# Добавление товара в корзину
 def cart_add(request):
 
 
     service_id = request.POST.get("service_id")
 
-    service = Services.objects.get(id=service_id)
-    product = service.machine  
+    service = Services.objects.get(id=service_id) # Работа
+    product = service.machine  # Станок
 
+    # Если пользователь авторизован, выполняется действие
     if request.user.is_authenticated:
-        carts = Cart.objects.filter(user=request.user, service=service, product=product)
+        carts = Cart.objects.filter(user=request.user, service=service, product=product) 
 
-        if carts.exists():
+        if carts.exists(): # Уже есть товары в корзине, т.е. "корзина создана"
             cart = carts.first()
             if cart:
                 cart.quantity += 1
                 cart.save()
-        else:
+        # Товары в корзину не добавлены
+        else:   
             Cart.objects.create(user=request.user, service=service,  product=product, quantity=1)
 
-    # else:
-    #         # Логика для неавторизованных пользователей
-    #         messages.warning(
-    #             request,
-    #             'Для добавления товара в корзину требуется авторизация.'
-    #         )
-    #         return redirect(request.META['HTTP_REFERER'])
-
+    # Если нет - уведомление о необходимости авторизации
     if not request.user.is_authenticated:
         return JsonResponse({
             "error": "auth_required",
             "message": "Для добавления товара в корзину необходимо войти или зарегистрироваться."
         }, status=401)
 
-
-        
-
-    user_cart = get_user_carts(request)
+    user_cart = get_user_carts(request) #функция, которая возвращает список корзин пользователя
+    
+    # Отображение товаров, добавленных в корзины с сортировкой по дате-времени добавления
     cart_items_html = render_to_string(
         "carts/includes/included_cart.html", {"carts": user_cart.order_by('created_timestamp')}, request=request)
 
+    # Уведомление + ссылка на страницу корзины как результат функции
     response_data = {
         "message": "Товар добавлен в корзину",
         "cart_items_html": cart_items_html,
@@ -75,10 +55,10 @@ def cart_add(request):
 
     return JsonResponse(response_data)
 
-            
+# Изменение количества товаров в корзине
 def cart_change(request):
-     cart_id = request.POST.get("cart_id")
-     quantity = request.POST.get("quantity")
+     cart_id = request.POST.get("cart_id") #Идентификатор корзины
+     quantity = request.POST.get("quantity") # Кол-во товаров в корзине
  
      cart = Cart.objects.get(id=cart_id)
  
@@ -87,9 +67,11 @@ def cart_change(request):
      updated_quantity = cart.quantity
  
      cart = get_user_carts(request)
+     # Отображение товаров, добавленных в корзины с сортировкой по дате-времени добавления
      cart_items_html = render_to_string(
          "carts/includes/included_cart.html", {"carts": cart.order_by('created_timestamp')}, request=request)
  
+    # Уведомление + ссылка на изменную страницу корзины как результат функции
      response_data = {
          "message": "Количество изменено",
          "cart_items_html": cart_items_html,
@@ -98,18 +80,21 @@ def cart_change(request):
  
      return JsonResponse(response_data)
 
+# Изменение товаров из корзины
 def cart_remove(request):
     
-    cart_id = request.POST.get("cart_id")
+    cart_id = request.POST.get("cart_id") #Идентификатор корзины
 
     cart = Cart.objects.get(id=cart_id)
     quantity = cart.quantity
     cart.delete()
 
     user_cart = get_user_carts(request)
+    # Отображение товаров, добавленных в корзины с сортировкой по дате-времени добавления
     cart_items_html = render_to_string(
         "carts/includes/included_cart.html", {"carts": user_cart}, request=request)
 
+    # Уведомление + ссылка на изменную страницу корзины как результат функции
     response_data = {
         "message": "Товар удален",
         "cart_items_html": cart_items_html,

@@ -7,7 +7,7 @@ from carts.models import Cart
 
 from goods.models import Products
 from orders.forms import CreateOrderForm
-from orders.models import Order, OrderItem
+from orders.models import Order, OrderItem #, OrderStatus
 
 
 def create_order(request):
@@ -25,23 +25,13 @@ def create_order(request):
                             user=user,
                             phone_number=form.cleaned_data['phone_number'],
                             organisation_info=form.cleaned_data['organisation_info'],
-
-                            # requires_delivery=form.cleaned_data['requires_delivery'],
-                            # delivery_address=form.cleaned_data['delivery_address'],
-                            # payment_on_get=form.cleaned_data['payment_on_get'],
                         )
                         # Создать заказанные товары
                         for cart_item in cart_items:
                             service=cart_item.service
-                            # product=cart_item.product
                             name=cart_item.service.name
                             duration=cart_item.service.duration
                             quantity=cart_item.quantity
-
-
-                            # if product.quantity < quantity:
-                            #     raise ValidationError(f'Недостаточное количество товара {name} на складе\
-                            #                            В наличии - {product.quantity}')
 
                             OrderItem.objects.create(
                                 order=order,
@@ -50,8 +40,6 @@ def create_order(request):
                                 duration=duration,
                                 quantity=quantity,
                             )
-                            # product.quantity -= quantity
-                            # product.save()
 
                         # Очистить корзину пользователя после создания заказа
                         cart_items.delete()

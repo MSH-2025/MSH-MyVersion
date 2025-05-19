@@ -1,26 +1,23 @@
 from django.contrib import admin
 
-# Register your models here.
+# Файл для отображения раздела "Товары" в панели администратора
+# Параметр prepopulated_fields используется в Django Admin для автоматического заполнения полей на основе значений других полей.
 
 from goods.models import Categories, Products, Countries, Services
 
-#admin.site.register(Categories)
-
-#admin.site.register(Products)
-
-@admin.register(Categories)
+@admin.register(Categories) #вкладка "категории" в разделе "товары"
 class CategoriesAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
-@admin.register(Products)
+@admin.register(Products)   #вкладка "Станки" в разделе "товары"
 class ProductsAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
-@admin.register(Countries)
+@admin.register(Countries)  #вкладка "Страны" в разделе "товары"
 class ProductsAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 
-@admin.register(Services)
+@admin.register(Services)   #вкладка "Работы" в разделе "товары"
 class ProductsAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}

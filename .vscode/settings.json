@@ -1,8 +1,9 @@
 {
-    "git.autoRepositoryDetection": "subFolders",
+    //Файл конфигурации для правильного отображения кода
+    "git.autoRepositoryDetection": "subFolders", //автоматическое обнаружение git-репозиториев в подпапках
     "breadcrumbs.enabled": true,
-    "debug.autoExpandLazyVariables": "on",
-    "debug.inlineValues": "on",
+    "debug.autoExpandLazyVariables":true, //улучшенная отладка с автоматическим раскрытием переменных и отображением значений в коде
+    "debug.inlineValues": "on", //при остановке на брейкпоинте в редакторе рядом с переменными будет показано их текущее значение.
     "python.languageServer": "Pylance",
     "python.analysis.typeCheckingMode": "off",
     "python.analysis.diagnosticMode": "openFilesOnly",
@@ -22,7 +23,7 @@
         }
     ],
     "[python]": {
-        "editor.defaultFormatter": "ms-python.black-formatter"
+        "editor.defaultFormatter": "ms-python.black-formatter" //автоформаттер для Python, который автоматически форматирует код по единому стилю, облегчая чтение и поддержку
     },
     "emmet.includeLanguages": {
         "django-html": "html"
@@ -39,7 +40,7 @@
         "wagtail"
     ],
     "[django-html]": {
-        "editor.defaultFormatter": "batisteo.vscode-django",
+        "editor.defaultFormatter": "batisteo.vscode-django", //поддержка синтаксиса Django-шаблонов
         "breadcrumbs.showClasses": true,
         "editor.quickSuggestions": {
             "other": true,

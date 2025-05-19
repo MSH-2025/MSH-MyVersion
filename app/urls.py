@@ -22,19 +22,18 @@ from goods import views
 from app import settings
 from django.conf.urls.static import static
 
-# Вызывать не будем функцию а просто ее зарегаем. также укажем имя, оно необходимо, вдруг мы поменяли PATH
-# Так что лучше использовать псевдоним
-
+# Определение ссылок на модули преложения (важно для отображения на web-сайте)
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('main.urls', namespace='main')),
-    path('catalog/', include('goods.urls', namespace='catalog')),
-    path('user/', include('users.urls', namespace='user')),
-    path('cart/', include('carts.urls', namespace='cart')),
-    path('orders/', include('orders.urls', namespace='orders')),
-
+    path('admin/', admin.site.urls), #панель администратора
+    path('', include('main.urls', namespace='main')),  #главная страница
+    path('catalog/', include('goods.urls', namespace='catalog')),    #каталог товаров
+    path('user/', include('users.urls', namespace='user')), # профиль пользователя
+    path('cart/', include('carts.urls', namespace='cart')),     #корзина
+    path('orders/', include('orders.urls', namespace='orders')),    #заказы
+    #path('', include('urls')),  # подключаете маршруты своего приложения
 ]
 
+# Определение ссылок для страниц об ошибках (необходимо для отладки приложения)
 if settings.DEBUG:
     urlpatterns += [
         path("__debug__/", include("debug_toolbar.urls")),

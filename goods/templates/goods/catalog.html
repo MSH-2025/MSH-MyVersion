@@ -1,3 +1,5 @@
+<!-- файл с разметкой веб-страницы страницы "Каталог"-"Фильтры" -->
+
 {% extends "base.html" %}
 {% load static %}
 
@@ -17,20 +19,6 @@
             </button>
     
             <form action=" {% if request.GET.q %}{% url "catalog:search" %}{% else %}{% url "catalog:index" slug_url %}{% endif %}" method="get" class="dropdown-menu bg-dark" data-bs-theme="dark">
-{% comment %}
-                    <div class="form-check text-white mx-3">
-                        <input class="form-check-input" type="checkbox" name="on_sale" id="flexCheckDefault" value="on" {% if request.GET.on_sale == 'on' %} checked {% endif %}>
-                        
-                        {% if request.GET.q %}
-                            <input type="hidden" name="q" value="{{ request.GET.q }}">
-                        {% endif %}
-        
-        
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Товары по акции
-                        </label>
-                    </div>
-{% endcomment %}
                 <p class="text-white mx-3 mt-3">Выбрать страну производитель:</p>
                 
                 <div class="form-check text-white mx-3">
@@ -39,15 +27,6 @@
                         Все страны
                     </label>
                 </div>
-
-
-                {% comment %} <div class="form-check text-white mx-3">
-                    <input class="form-check-input" type="radio" name="country" id="flexRadioDefault3" value="Россия">
-                    <label class="form-check-label" for="flexRadioDefault3">
-                        Россия
-                    </label>
-                </div> {% endcomment %}
-
 
                 {% for country in countries %}
                     <div class="form-check text-white mx-3">
@@ -58,10 +37,7 @@
                     </div>
                 {% endfor %}
 
-
-
-
-                        <!-- Поля для выбора года -->
+        <!-- Поля для выбора года -->
         <div class="text-white mx-3 mt-3">
             <p>Год производства:</p>
             <div class="row g-2">
@@ -85,9 +61,6 @@
                 </div>
             </div>
         </div>
-        
-
-
                 <button type="submit" class="btn btn-primary mx-3 mt-3">Применить</button>
             </form>
         </div>
@@ -120,31 +93,13 @@
                     <p class="product_county">id: {{ product.display_id }}</p>
                     <p class="product_county">Стана производитель: {{ product.country }}</p>
                     <p class="product_year">Год выпуска: {{ product.year }}</p>
-
-{% comment %}
-                        <div class="d-flex justify-content-between">
-    
-                            {% if product.discount  %}
-                                <p><s>{{ product.price }}</s> $</p>
-                                <p><strong>{{ product.sell_price }}</strong></p>
-                                <span class="badge bg-warning text-dark">Скидка {{ product.discount }} %</span>
-                            {% else %}
-                                <p><strong>{{ product.price }}</strong></p>
-                            {% endif %}
-    
-                            <a href="#" class="btn add-to-cart">
-                                <img class="mx-1" src="{% static "deps/icons/cart-plus.svg" %}" alt="Catalog Icon"
-                                    width="32" height="32">
-                            </a>
-                        </div>
-{% endcomment %}
                 </div>
             </div>
         </div>
     {% endfor %}
 
 </div>
-<!-- Пагинация -->
+<!-- Разбивка на страницы (Предыдущая - Следующая) -->
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center my-4">
         <div class="custom-shadow d-flex">
@@ -167,17 +122,7 @@
                 #
                 {% endif %}">Следующая</a>
             </li>
-
-
         </div>
     </ul>
 </nav>
 {% endblock  %}
-
-{% comment %} {% block  footer%}
-    <footer class="py-4 bg-dark">
-        <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Home Python Hub Studio 2023</p>
-        </div>
-    </footer>
-{% endblock  %} {% endcomment %}

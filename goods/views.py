@@ -70,9 +70,6 @@ def product(request, product_slug):
     product = Products.objects.get(slug=product_slug)
     service = Services.objects.filter(machine=product)
 
-    #service = Services.objects.all()
-
-
     context = {
         'product': product,
         'services': service,
