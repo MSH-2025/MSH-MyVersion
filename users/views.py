@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
 from django.contrib import auth, messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
@@ -13,7 +14,6 @@ from orders.models import Order, OrderItem
 
 
 def login(request):
-    login_attempts = request.session.get('login_attempts', 0)
 
     if request.method == 'POST':
         form = UserLoginForm(data=request.POST)
@@ -23,12 +23,9 @@ def login(request):
 
         if user:
             auth.login(request, user)
-            request.session['login_attempts'] = 0  # сброс попыток
             messages.success(request, f"{username}, Вы вошли в аккаунт")
             return redirect('main:index')
         else:
-            login_attempts += 1
-            request.session['login_attempts'] = login_attempts
             messages.warning(request, "Неверный логин или пароль.")
 
     else:
@@ -38,11 +35,7 @@ def login(request):
         'title': 'Home - Авторизация',
         'form': form,
     }
-
-    if login_attempts >= 5:
-        messages.error(request, "Превышено количество попыток входа.")
-        return redirect('main:index')
-
+    update_session_auth_hash(request, user) 
     return render(request, 'users/login.html', context)
 
 
@@ -64,12 +57,6 @@ def registration(request):
          'form': form
      }
      return render(request, 'users/registration.html', context)
-
-# def profile(request):
-#     context = {
-#         'title': 'Home - Кабинет'
-#     }
-#     return render(request, 'users/profile.html', context)
 
 @login_required
 def profile(request):

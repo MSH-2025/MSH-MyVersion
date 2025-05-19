@@ -4,7 +4,7 @@ python3 manage.py migrate
 python3 manage.py createsuperuser
 python3 manage.py runserver
 //python3 -m venv venv
-//sudo apt-get install python-module-django
+//apt-get install python-module-django
 //pip install django==4.2.20
 //pip install django-axes[ipware]
 //pip install psycopg2-binary

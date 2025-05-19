@@ -142,7 +142,6 @@ INTERNAL_IPS = [
 AUTHENTICATION_BACKENDS = [
     'axes.backends.AxesBackend',    # бэкенд аутентификации из пакета django-axes (отслеживание и блокировку неудачных попыток входа)
     'django.contrib.auth.backends.ModelBackend', #стандартный бэкенд Django (проверяет имя пользователя и пароль в базе данных)
-    #'users.authentication.EmailAuthBackend',
 ]
 AXES_LOCKOUT_PARAMETERS = [["ip_address", "user_agent", "username"]] # каждого пользователя определяют 3 параметра: ip-адрес, имя браузера и имя пользователя
 AXES_FAILURE_LIMIT = 5  # максимум 5 неудачных попыток
@@ -154,14 +153,18 @@ SESSION_COOKIE_AGE = 1800   # сессия истекает через 30 мин
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # выход из аккаунта при закрытии браузера
 SESSION_SAVE_EVERY_REQUEST = True # обновлять время жизни сессии при каждом запросе
 
-
+# Переменные для проверки работа отправки писем на электронную почту
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
+
+# При запуске приложения на производстве и подключении SMTP-сервера (не предполагается по ТЗ)
+# Переменные надо будет заменить на следующие:
+
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'smtp.example.com'
 # EMAIL_PORT = 587
 # EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'your_email@example.com'
-# EMAIL_HOST_PASSWORD = 'your_password'
-# DEFAULT_FROM_EMAIL = 'webmaster@example.com'
+# EMAIL_HOST_USER = 'Адрес_электронной_почты_отправителя'
+# EMAIL_HOST_PASSWORD = 'Пароль_электронной_почты_отправителя'
+# DEFAULT_FROM_EMAIL = 'Отображаемый адрес отправителя в письме'

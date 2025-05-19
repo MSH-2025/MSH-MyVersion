@@ -5,17 +5,12 @@ from goods.models import Products, Countries, Services
 import goods
 from goods.utils import q_search
 
-# Create your views here.
+# Отображение каталога
 def catalog(request, category_slug=None):
 
     page = request.GET.get('page', 1)
-
-    on_sale = request.GET.get('on_sale', None)
     order_by = request.GET.get('order_by', None)
-
-
     country = request.GET.get('country', None)
-
     countries = Countries.objects.all()
 
     # query - это поисковый запрос    
@@ -26,20 +21,13 @@ def catalog(request, category_slug=None):
     elif query:
         goods = q_search(query)
     else:
-        # goods = get_list_or_404(Products.objects.filter(category__slug=category_slug))
         goods = Products.objects.filter(category__slug=category_slug)
-
-
-    if on_sale:
-        goods = goods.filter(discount__gt=0)
 
     if order_by and order_by != "default":
         goods = goods.order_by(order_by)
 
     if country and country != "default":
         goods = goods.filter(country__name=country)
-
-
 
     # Фильтрация по году
     year_min = request.GET.get('year_min')
@@ -61,11 +49,10 @@ def catalog(request, category_slug=None):
         'goods': current_page,
         'slug_url': category_slug,
         'countries': countries,
-
-
     }
     return render(request, 'goods/catalog.html', context)
 
+# Отображение товара
 def product(request, product_slug):
     product = Products.objects.get(slug=product_slug)
     service = Services.objects.filter(machine=product)
