@@ -42,10 +42,7 @@ class Order(models.Model):
         verbose_name_plural = "Заказы"
 
     def __str__(self):
-        #if self.status!=None:
-        #    return f"Заказ № {self.pk} | Покупатель {self.user.first_name} {self.user.last_name} | Статус: {self.status.status}"
-        #else:
-            return f"Заказ № {self.pk} | Покупатель {self.user.first_name} {self.user.last_name}"
+        return f"Заказ № {self.pk} | Покупатель {self.user.first_name} {self.user.last_name}"
 
 
 class OrderItem(models.Model):

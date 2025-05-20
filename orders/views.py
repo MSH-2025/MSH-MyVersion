@@ -7,7 +7,7 @@ from carts.models import Cart
 
 from goods.models import Products
 from orders.forms import CreateOrderForm
-from orders.models import Order, OrderItem #, OrderStatus
+from orders.models import Order, OrderItem
 
 
 def create_order(request):

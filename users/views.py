@@ -11,7 +11,6 @@ from users.forms import UserLoginForm, UserRegistrationForm, ProfileForm
 from orders.models import Order, OrderItem
 
 def login(request):
-
     if request.method == 'POST':
         form = UserLoginForm(data=request.POST)
         username = request.POST.get('username')
@@ -24,11 +23,11 @@ def login(request):
             return HttpResponseRedirect(reverse('main:index'))
         else:
             messages.warning(request, "Неверный логин или пароль.")
-            context = {
-                'title': 'Home - Авторизация',
-                'form': form,
-            }
-            return render(request, 'users/login.html', context)
+            # context = {
+            #     'title': 'Home - Авторизация',
+            #     'form': form,
+            # }
+            # return render(request, 'users/login.html', context)
 
     else:
         form = UserLoginForm()
@@ -39,7 +38,7 @@ def login(request):
     }
     return render(request, 'users/login.html', context)
 
-
+'''регистрация новой учетной записи'''
 def registration(request):
      if request.method == 'POST':
          form = UserRegistrationForm(data=request.POST)
